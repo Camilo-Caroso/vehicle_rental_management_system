@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+ 
+# Virtual environment
+venv/
+.venv/
+ 
+# Django
+*.log
+db.sqlite3
+ 
+# Environment variables
+.env
+.env.*
+ 
+# Pyright / editor
+pyrightconfig.json
+.vscode/
+ 
+# Docker
+.dockerignore
+ 
+# OS
+.DS_Store
+Thumbs.db
