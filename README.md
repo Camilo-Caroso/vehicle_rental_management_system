@@ -22,7 +22,7 @@ docker build -t vrms .
 Run the container:
  
 ```bash
-docker run --rm -p 3004:8000 vrms
+docker run --rm -p 3004:8000 -v $(pwd):/app vrms
 ```
  
 The API will be available at `http://localhost:3004`.
