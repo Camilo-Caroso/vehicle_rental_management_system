@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.urls import path, include
 from . import views
 from rentals import dashboard_views
+from django.shortcuts import redirect
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -25,6 +26,8 @@ urlpatterns = [
     path('health/', views.health),
 
     path('api/', include('rentals.urls')),
+
+    path('', lambda request: redirect('/dashboard/')),
 
     path('dashboard/', dashboard_views.dashboard),
     path('dashboard/partials/branches/', dashboard_views.branches_partial),
