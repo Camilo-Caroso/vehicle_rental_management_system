@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% include "dashboard/modals/customer_create.html" %}
+
+<div class="bg-white rounded shadow p-4">
+    <div class="flex items-center justify-between mb-4">
+        <h2 class="font-bold text-xl">Customers</h2>
+        <div class="flex gap-4 items-center">
+        <button onclick="document.getElementById('create-customer-modal').classList.remove('hidden')"
+                class="bg-blue-600 text-white text-sm px-4 py-2 rounded hover:bg-blue-700">
+            + New Customer
+        </button>
+        <a href="/dashboard/" class="text-sm text-gray-500 hover:text-gray-800">← Back to Dashboard</a>
+    </div>
+    </div>
+
+    <table class="w-full text-sm">
+        <thead>
+            <tr class="text-left text-gray-500 border-b">
+                <th class="pb-2">Name</th>
+                <th class="pb-2">Email</th>
+                <th class="pb-2">Phone</th>
+                <th class="pb-2">License</th>
+                <th class="pb-2">Rentals</th>
+                <th class="pb-2">Reports</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for customer in customers %}
+            <tr class="border-b cursor-pointer hover:bg-gray-50"
+                hx-get="/dashboard/customers/{{ customer.customer_id }}/detail/"
+                hx-target="#customer-detail-{{ customer.customer_id }}"
+                hx-swap="innerHTML"
+                hx-trigger="click"
+                onclick="toggleDetail('{{ customer.customer_id }}')">
+                <td class="py-2">{{ customer.first_name }} {{ customer.last_name }}</td>
+                <td class="py-2">{{ customer.email }}</td>
+                <td class="py-2">{{ customer.phone }}</td>
+                <td class="py-2">{{ customer.drivers_license_number }}</td>
+                <td class="py-2">{{ customer.rental_count }}</td>
+                <td class="py-2">{{ customer.report_count }}</td>
+            </tr>
+            <tr id="customer-detail-row-{{ customer.customer_id }}" class="hidden">
+                <td colspan="6">
+                    <div id="customer-detail-{{ customer.customer_id }}" class="bg-gray-50 p-4"></div>
+                </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="6" class="py-2 text-gray-400">No customers found.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<script>
+function toggleDetail(customerId) {
+    const detailRow = document.getElementById('customer-detail-row-' + customerId);
+    const isHidden = detailRow.classList.contains('hidden');
+
+    if (isHidden) {
+        detailRow.classList.remove('hidden');
+    } else {
+        detailRow.classList.add('hidden');
+        document.getElementById('customer-detail-' + customerId).innerHTML = '';
+    }
+}
+</script>
+{% endblock %}

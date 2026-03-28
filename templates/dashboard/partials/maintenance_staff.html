@@ -1,0 +1,21 @@
+<table class="w-full text-sm">
+    <thead>
+        <tr class="text-left text-gray-500 border-b">
+            <th class="pb-2">Name</th>
+            <th class="pb-2">Branch</th>
+            <th class="pb-2">Phone</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for staff in staff_list %}
+        <tr class="border-b last:border-0">
+            <td class="py-2">{{ staff.first_name }} {{ staff.last_name }}</td>
+            <td class="py-2">{{ staff.branch.name }}</td>
+            <td class="py-2">{{ staff.phone }}</td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="3" class="py-2 text-gray-400">No staff found.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+<a href="/dashboard/maintenance-staff/" class="text-sm text-blue-500 hover:underline mt-2 block">View All →</a>

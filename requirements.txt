@@ -2,3 +2,5 @@ Django==5.2.4
 djangorestframework~=3.16
 pymysql==1.1.2
 python-decouple==3.8
+django-htmx==1.23.2
+gunicorn

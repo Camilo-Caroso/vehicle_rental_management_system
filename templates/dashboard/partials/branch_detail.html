@@ -1,0 +1,30 @@
+<div class="grid grid-cols-3 gap-4 text-sm">
+
+    <div>
+        <h3 class="font-bold mb-2 text-gray-600">Vehicles</h3>
+        {% for vehicle in vehicles %}
+        <div class="border-b py-1">{{ vehicle.make }} {{ vehicle.model }} — {{ vehicle.license_plate }}</div>
+        {% empty %}
+        <div class="text-gray-400">No vehicles.</div>
+        {% endfor %}
+    </div>
+
+    <div>
+        <h3 class="font-bold mb-2 text-gray-600">Maintenance Staff</h3>
+        {% for staff in staff %}
+        <div class="border-b py-1">{{ staff.first_name }} {{ staff.last_name }} — {{ staff.phone }}</div>
+        {% empty %}
+        <div class="text-gray-400">No staff.</div>
+        {% endfor %}
+    </div>
+
+    <div>
+        <h3 class="font-bold mb-2 text-gray-600">Rental Agreements</h3>
+        {% for rental in rentals %}
+        <div class="border-b py-1">{{ rental.customer.first_name }} {{ rental.customer.last_name }} — {{ rental.status }}</div>
+        {% empty %}
+        <div class="text-gray-400">No rentals.</div>
+        {% endfor %}
+    </div>
+
+</div>

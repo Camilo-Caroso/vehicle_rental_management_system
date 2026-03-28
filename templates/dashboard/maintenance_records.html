@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% include "dashboard/modals/maintenance_record_create.html" %}
+
+<div class="bg-white rounded shadow p-4">
+    <div class="flex items-center justify-between mb-4">
+        <h2 class="font-bold text-xl">Maintenance Records</h2>
+        <div class="flex gap-4 items-center">
+            <button onclick="document.getElementById('create-record-modal').classList.remove('hidden')"
+                class="bg-blue-600 text-white text-sm px-4 py-2 rounded hover:bg-blue-700">
+                + New Record
+            </button>
+            <a href="/dashboard/" class="text-sm text-gray-500 hover:text-gray-800">← Back to Dashboard</a>
+        </div>
+    </div>
+
+    <table class="w-full text-sm">
+        <thead>
+            <tr class="text-left text-gray-500 border-b">
+                <th class="pb-2">Vehicle</th>
+                <th class="pb-2">Issue Type</th>
+                <th class="pb-2">Status</th>
+                <th class="pb-2">Reported</th>
+                <th class="pb-2">Reported By</th>
+                <th class="pb-2">Assigned To</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for record in records %}
+            <tr class="border-b cursor-pointer hover:bg-gray-50"
+                hx-get="/dashboard/maintenance-records/{{ record.vehicle_maintenance_record_id }}/detail/"
+                hx-target="#record-detail-{{ record.vehicle_maintenance_record_id }}"
+                hx-swap="innerHTML"
+                hx-trigger="click"
+                onclick="toggleDetail('{{ record.vehicle_maintenance_record_id }}')">
+                <td class="py-2">{{ record.vehicle.make }} {{ record.vehicle.model }}</td>
+                <td class="py-2">
+                    <span class="px-2 py-1 rounded text-xs font-medium
+                        {% if record.issue_type == 'Urgent' %}bg-red-100 text-red-700
+                        {% else %}bg-blue-100 text-blue-700
+                        {% endif %}">
+                        {{ record.issue_type }}
+                    </span>
+                </td>
+                <td class="py-2">
+                    <span class="px-2 py-1 rounded text-xs font-medium
+                        {% if record.status == 'Complete' %}bg-green-100 text-green-700
+                        {% elif record.status == 'InProgress' %}bg-yellow-100 text-yellow-700
+                        {% elif record.status == 'AwaitingParts' %}bg-orange-100 text-orange-700
+                        {% else %}bg-gray-100 text-gray-700
+                        {% endif %}">
+                        {{ record.status }}
+                    </span>
+                </td>
+                <td class="py-2">{{ record.reported_datetime|date:"M d, Y" }}</td>
+                <td class="py-2">
+                    {% if record.reporting_customer %}
+                        {{ record.reporting_customer.first_name }} {{ record.reporting_customer.last_name }}
+                    {% else %}
+                        —
+                    {% endif %}
+                </td>
+                <td class="py-2">
+                    {% if record.assigned_staff %}
+                        {{ record.assigned_staff.first_name }} {{ record.assigned_staff.last_name }}
+                    {% else %}
+                        —
+                    {% endif %}
+                </td>
+            </tr>
+            <tr id="record-detail-row-{{ record.vehicle_maintenance_record_id }}" class="hidden">
+                <td colspan="6">
+                    <div id="record-detail-{{ record.vehicle_maintenance_record_id }}" class="bg-gray-50 p-4"></div>
+                </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="6" class="py-2 text-gray-400">No maintenance records found.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<script>
+function toggleDetail(recordId) {
+    const detailRow = document.getElementById('record-detail-row-' + recordId);
+    const isHidden = detailRow.classList.contains('hidden');
+
+    if (isHidden) {
+        detailRow.classList.remove('hidden');
+    } else {
+        detailRow.classList.add('hidden');
+        document.getElementById('record-detail-' + recordId).innerHTML = '';
+    }
+}
+</script>
+{% endblock %}

@@ -1,0 +1,25 @@
+<div class="grid grid-cols-2 gap-4 text-sm">
+
+    <div>
+        <h3 class="font-bold mb-2 text-gray-600">Description</h3>
+        <p class="text-gray-700">{{ record.description }}</p>
+    </div>
+
+    <div>
+        <h3 class="font-bold mb-2 text-gray-600">Notes</h3>
+        <p class="text-gray-700">{{ record.notes|default:"No notes." }}</p>
+    </div>
+
+    <div>
+        <h3 class="font-bold mb-2 text-gray-600">Timeline</h3>
+        <div class="border-b py-1">Reported: {{ record.reported_datetime }}</div>
+        <div class="border-b py-1">Resolved: {{ record.resolved_datetime|default:"Not resolved yet" }}</div>
+    </div>
+
+    <div>
+        <h3 class="font-bold mb-2 text-gray-600">Vehicle</h3>
+        <div class="border-b py-1">{{ record.vehicle.make }} {{ record.vehicle.model }} {{ record.vehicle.year }}</div>
+        <div class="border-b py-1">Plate: {{ record.vehicle.license_plate }}</div>
+    </div>
+
+</div>

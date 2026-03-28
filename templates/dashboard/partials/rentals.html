@@ -1,0 +1,24 @@
+<table class="w-full text-sm">
+    <thead>
+        <tr class="text-left text-gray-500 border-b">
+            <th class="pb-2">Customer</th>
+            <th class="pb-2">Vehicle</th>
+            <th class="pb-2">Pickup</th>
+            <th class="pb-2">Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for rental in rentals %}
+        <tr class="border-b last:border-0">
+            <td class="py-2">{{ rental.customer.first_name }} {{ rental.customer.last_name }}</td>
+            <td class="py-2">{{ rental.vehicle.make }} {{ rental.vehicle.model }}</td>
+            <td class="py-2">{{ rental.scheduled_pickup_datetime }}</td>
+            <td class="py-2">{{ rental.status }}</td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="4" class="py-2 text-gray-400">No active rentals found.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<a href="/dashboard/rental-agreements/" class="text-sm text-blue-500 hover:underline mt-2 block">View All →</a>

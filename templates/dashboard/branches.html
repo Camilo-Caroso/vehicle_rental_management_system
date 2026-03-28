@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% include "dashboard/modals/branch_create.html" %}
+
+<div class="bg-white rounded shadow p-4">
+    <div class="flex items-center justify-between mb-4">
+        <h2 class="font-bold text-xl">Branches</h2>
+        <div class="flex gap-4 items-center">
+        <button onclick="document.getElementById('create-modal').classList.remove('hidden')"
+                class="bg-blue-600 text-white text-sm px-4 py-2 rounded hover:bg-blue-700">
+            + New Branch
+        </button>
+        <a href="/dashboard/" class="text-sm text-gray-500 hover:text-gray-800">← Back to Dashboard</a>
+    </div>
+    </div>
+
+    <table class="w-full text-sm">
+        <thead>
+            <tr class="text-left text-gray-500 border-b">
+                <th class="pb-2">Name</th>
+                <th class="pb-2">Address</th>
+                <th class="pb-2">Phone</th>
+                <th class="pb-2">Vehicles</th>
+                <th class="pb-2">Staff</th>
+                <th class="pb-2">Rentals</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for branch in branches %}
+            <tr class="border-b cursor-pointer hover:bg-gray-50"
+                hx-get="/dashboard/branches/{{ branch.branch_id }}/detail/"
+                hx-target="#branch-detail-{{ branch.branch_id }}"
+                hx-swap="innerHTML"
+                hx-trigger="click"
+                onclick="toggleDetail('{{ branch.branch_id }}', this)">
+                <td class="py-2">{{ branch.name }}</td>
+                <td class="py-2">{{ branch.address }}</td>
+                <td class="py-2">{{ branch.phone }}</td>
+                <td class="py-2">{{ branch.vehicle_count }}</td>
+                <td class="py-2">{{ branch.staff_count }}</td>
+                <td class="py-2">{{ branch.rental_count }}</td>
+            </tr>
+            <tr id="branch-detail-row-{{ branch.branch_id }}" class="hidden">
+                <td colspan="6">
+                    <div id="branch-detail-{{ branch.branch_id }}" class="bg-gray-50 p-4"></div>
+                </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="6" class="py-2 text-gray-400">No branches found.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<script>
+function toggleDetail(branchId, row) {
+    const detailRow = document.getElementById('branch-detail-row-' + branchId);
+    const isHidden = detailRow.classList.contains('hidden');
+
+    if (isHidden) {
+        detailRow.classList.remove('hidden');
+    } else {
+        detailRow.classList.add('hidden');
+        document.getElementById('branch-detail-' + branchId).innerHTML = '';
+    }
+}
+</script>
+{% endblock %}

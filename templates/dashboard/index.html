@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="grid grid-cols-2 gap-6">
+
+    <div class="bg-white rounded shadow p-4">
+        <h2 class="font-bold text-lg mb-4">Branches</h2>
+        <div id="branches-list"
+             hx-get="/dashboard/partials/branches/"
+             hx-trigger="load">
+            Loading...
+        </div>
+    </div>
+
+    <div class="bg-white rounded shadow p-4">
+        <h2 class="font-bold text-lg mb-4">Vehicles</h2>
+        <div id="vehicles-list"
+             hx-get="/dashboard/partials/vehicles/"
+             hx-trigger="load">
+            Loading...
+        </div>
+    </div>
+
+    <div class="bg-white rounded shadow p-4">
+        <h2 class="font-bold text-lg mb-4">Active Rentals</h2>
+        <div id="rentals-list"
+             hx-get="/dashboard/partials/rentals/"
+             hx-trigger="load">
+            Loading...
+        </div>
+    </div>
+
+    <div class="bg-white rounded shadow p-4">
+        <h2 class="font-bold text-lg mb-4">Maintenance Records</h2>
+        <div id="maintenance-list"
+             hx-get="/dashboard/partials/maintenance/"
+             hx-trigger="load">
+            Loading...
+        </div>
+    </div>
+
+
+    <div class="bg-white rounded shadow p-4">
+        <h2 class="font-bold text-lg mb-4">Customers</h2>
+        <div id="customers-list"
+            hx-get="/dashboard/partials/customers/"
+            hx-trigger="load">
+            Loading...
+        </div>
+    </div>
+
+    <div class="bg-white rounded shadow p-4">
+        <h2 class="font-bold text-lg mb-4">Maintenance Staff</h2>
+        <div id="maintenance-staff-list"
+            hx-get="/dashboard/partials/maintenance-staff/"
+            hx-trigger="load">
+            Loading...
+        </div>
+    </div>
+
+</div>
+{% endblock %}

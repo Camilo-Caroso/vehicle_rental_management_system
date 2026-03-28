@@ -1,0 +1,28 @@
+<div class="grid grid-cols-2 gap-4 text-sm">
+
+    <div>
+        <h3 class="font-bold mb-2 text-gray-600">Scheduled</h3>
+        <div class="border-b py-1">Pickup: {{ rental.scheduled_pickup_datetime }}</div>
+        <div class="border-b py-1">Return: {{ rental.scheduled_return_datetime }}</div>
+    </div>
+
+    <div>
+        <h3 class="font-bold mb-2 text-gray-600">Actual</h3>
+        <div class="border-b py-1">Pickup: {{ rental.actual_pickup_datetime }}</div>
+        <div class="border-b py-1">Return: {{ rental.actual_return_datetime }}</div>
+    </div>
+
+    <div>
+        <h3 class="font-bold mb-2 text-gray-600">Cost</h3>
+        <div class="border-b py-1">Estimated: ${{ rental.estimated_cost }}</div>
+        <div class="border-b py-1">Actual: ${{ rental.actual_cost }}</div>
+    </div>
+
+    <div>
+        <h3 class="font-bold mb-2 text-gray-600">Vehicle</h3>
+        <div class="border-b py-1">{{ rental.vehicle.make }} {{ rental.vehicle.model }} {{ rental.vehicle.year }}</div>
+        <div class="border-b py-1">Plate: {{ rental.vehicle.license_plate }}</div>
+        <div class="border-b py-1">Daily Rate: ${{ rental.vehicle.daily_rate }}</div>
+    </div>
+
+</div>

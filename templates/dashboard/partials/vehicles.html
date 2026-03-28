@@ -1,0 +1,23 @@
+<table class="w-full text-sm">
+    <thead>
+        <tr class="text-left text-gray-500 border-b">
+            <th class="pb-2">Make</th>
+            <th class="pb-2">Model</th>
+            <th class="pb-2">Year</th>
+            <th class="pb-2">Plate</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for vehicle in vehicles %}
+        <tr class="border-b last:border-0">
+            <td class="py-2">{{ vehicle.make }}</td>
+            <td class="py-2">{{ vehicle.model }}</td>
+            <td class="py-2">{{ vehicle.year }}</td>
+            <td class="py-2">{{ vehicle.license_plate }}</td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="4" class="py-2 text-gray-400">No vehicles found.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+<a href="/dashboard/vehicles/" class="text-sm text-blue-500 hover:underline mt-2 block">View All →</a>

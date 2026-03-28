@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% include "dashboard/modals/vehicle_type_create.html" %}
+{% include "dashboard/modals/vehicle_create.html" %}
+
+<div class="bg-white rounded shadow p-4">
+    <div class="flex items-center justify-between mb-4">
+        <h2 class="font-bold text-xl">Vehicles</h2>
+        <div class="flex gap-4 items-center">
+            <button onclick="document.getElementById('create-vehicle-type-modal').classList.remove('hidden')"
+                    class="bg-gray-600 text-white text-sm px-4 py-2 rounded hover:bg-gray-700">
+                + New Vehicle Type
+            </button>
+            <button onclick="document.getElementById('create-vehicle-modal').classList.remove('hidden')"
+                    class="bg-blue-600 text-white text-sm px-4 py-2 rounded hover:bg-blue-700">
+                + New Vehicle
+            </button>
+            <a href="/dashboard/" class="text-sm text-gray-500 hover:text-gray-800">← Back to Dashboard</a>
+        </div>
+    </div>
+
+    <table class="w-full text-sm">
+        <thead>
+            <tr class="text-left text-gray-500 border-b">
+                <th class="pb-2">Make</th>
+                <th class="pb-2">Model</th>
+                <th class="pb-2">Year</th>
+                <th class="pb-2">Plate</th>
+                <th class="pb-2">Daily Rate</th>
+                <th class="pb-2">Rentals</th>
+                <th class="pb-2">Maintenance</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for vehicle in vehicles %}
+            <tr class="border-b cursor-pointer hover:bg-gray-50"
+                hx-get="/dashboard/vehicles/{{ vehicle.vehicle_id }}/detail/"
+                hx-target="#vehicle-detail-{{ vehicle.vehicle_id }}"
+                hx-swap="innerHTML"
+                hx-trigger="click"
+                onclick="toggleDetail('{{ vehicle.vehicle_id }}')">
+                <td class="py-2">{{ vehicle.make }}</td>
+                <td class="py-2">{{ vehicle.model }}</td>
+                <td class="py-2">{{ vehicle.year }}</td>
+                <td class="py-2">{{ vehicle.license_plate }}</td>
+                <td class="py-2">${{ vehicle.daily_rate }}</td>
+                <td class="py-2">{{ vehicle.rental_count }}</td>
+                <td class="py-2">{{ vehicle.maintenance_count }}</td>
+            </tr>
+            <tr id="vehicle-detail-row-{{ vehicle.vehicle_id }}" class="hidden">
+                <td colspan="7">
+                    <div id="vehicle-detail-{{ vehicle.vehicle_id }}" class="bg-gray-50 p-4"></div>
+                </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="7" class="py-2 text-gray-400">No vehicles found.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<script>
+function toggleDetail(vehicleId) {
+    const detailRow = document.getElementById('vehicle-detail-row-' + vehicleId);
+    const isHidden = detailRow.classList.contains('hidden');
+
+    if (isHidden) {
+        detailRow.classList.remove('hidden');
+    } else {
+        detailRow.classList.add('hidden');
+        document.getElementById('vehicle-detail-' + vehicleId).innerHTML = '';
+    }
+}
+</script>
+{% endblock %}

@@ -1,0 +1,13 @@
+<div class="text-sm">
+    <h3 class="font-bold mb-2 text-gray-600">Assigned Maintenance Records</h3>
+    {% for record in records %}
+    <div class="border-b py-1">
+        {{ record.vehicle.make }} {{ record.vehicle.model }} — 
+        {{ record.issue_type }} — 
+        {{ record.description|truncatechars:50 }} — 
+        <span class="font-medium">{{ record.status }}</span>
+    </div>
+    {% empty %}
+    <div class="text-gray-400">No assigned records.</div>
+    {% endfor %}
+</div>

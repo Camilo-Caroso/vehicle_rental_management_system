@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% include "dashboard/modals/maintenance_staff_create.html" %}
+
+<div class="bg-white rounded shadow p-4">
+    <div class="flex items-center justify-between mb-4">
+        <h2 class="font-bold text-xl">Maintenance Staff</h2>
+        <div class="flex gap-4 items-center">
+        <button onclick="document.getElementById('create-staff-modal').classList.remove('hidden')"
+                class="bg-blue-600 text-white text-sm px-4 py-2 rounded hover:bg-blue-700">
+            + New Staff
+        </button>
+        <a href="/dashboard/" class="text-sm text-gray-500 hover:text-gray-800">← Back to Dashboard</a>
+    </div>
+    </div>
+
+    <table class="w-full text-sm">
+        <thead>
+            <tr class="text-left text-gray-500 border-b">
+                <th class="pb-2">Name</th>
+                <th class="pb-2">Email</th>
+                <th class="pb-2">Phone</th>
+                <th class="pb-2">Office</th>
+                <th class="pb-2">Branch</th>
+                <th class="pb-2">Assigned Records</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for staff in staff_list %}
+            <tr class="border-b cursor-pointer hover:bg-gray-50"
+                hx-get="/dashboard/maintenance-staff/{{ staff.staff_id }}/detail/"
+                hx-target="#staff-detail-{{ staff.staff_id }}"
+                hx-swap="innerHTML"
+                hx-trigger="click"
+                onclick="toggleDetail('{{ staff.staff_id }}')">
+                <td class="py-2">{{ staff.first_name }} {{ staff.last_name }}</td>
+                <td class="py-2">{{ staff.email }}</td>
+                <td class="py-2">{{ staff.phone }}</td>
+                <td class="py-2">{{ staff.office_number|default:"—" }}</td>
+                <td class="py-2">{{ staff.branch.name }}</td>
+                <td class="py-2">{{ staff.record_count }}</td>
+            </tr>
+            <tr id="staff-detail-row-{{ staff.staff_id }}" class="hidden">
+                <td colspan="6">
+                    <div id="staff-detail-{{ staff.staff_id }}" class="bg-gray-50 p-4"></div>
+                </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="6" class="py-2 text-gray-400">No staff found.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<script>
+function toggleDetail(staffId) {
+    const detailRow = document.getElementById('staff-detail-row-' + staffId);
+    const isHidden = detailRow.classList.contains('hidden');
+
+    if (isHidden) {
+        detailRow.classList.remove('hidden');
+    } else {
+        detailRow.classList.add('hidden');
+        document.getElementById('staff-detail-' + staffId).innerHTML = '';
+    }
+}
+</script>
+{% endblock %}

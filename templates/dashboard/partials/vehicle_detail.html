@@ -1,0 +1,29 @@
+<div class="grid grid-cols-2 gap-4 text-sm">
+
+    <div>
+        <h3 class="font-bold mb-2 text-gray-600">Rental Agreements</h3>
+        {% for rental in rentals %}
+        <div class="border-b py-1">
+            {{ rental.customer.first_name }} {{ rental.customer.last_name }} — 
+            {{ rental.scheduled_pickup_datetime|date:"M d, Y" }} → 
+            {{ rental.scheduled_return_datetime|date:"M d, Y" }} — 
+            <span class="font-medium">{{ rental.status }}</span>
+        </div>
+        {% empty %}
+        <div class="text-gray-400">No rentals.</div>
+        {% endfor %}
+    </div>
+
+    <div>
+        <h3 class="font-bold mb-2 text-gray-600">Maintenance Records</h3>
+        {% for record in records %}
+        <div class="border-b py-1">
+            {{ record.issue_type }} — {{ record.description|truncatechars:50 }} — 
+            <span class="font-medium">{{ record.status }}</span>
+        </div>
+        {% empty %}
+        <div class="text-gray-400">No maintenance records.</div>
+        {% endfor %}
+    </div>
+
+</div>

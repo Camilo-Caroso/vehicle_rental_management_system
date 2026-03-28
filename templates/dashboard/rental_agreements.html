@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% include "dashboard/modals/rental_agreement_create.html" %}
+
+
+<div class="bg-white rounded shadow p-4">
+    <div class="flex items-center justify-between mb-4">
+        <h2 class="font-bold text-xl">Rental Agreements</h2>
+        <div class="flex gap-4 items-center">
+            <button onclick="document.getElementById('create-rental-modal').classList.remove('hidden')"
+                class="bg-blue-600 text-white text-sm px-4 py-2 rounded hover:bg-blue-700">
+                + New Rental
+            </button>
+            <a href="/dashboard/" class="text-sm text-gray-500 hover:text-gray-800">← Back to Dashboard</a>
+        </div>
+    </div>
+
+    <table class="w-full text-sm">
+        <thead>
+            <tr class="text-left text-gray-500 border-b">
+                <th class="pb-2">Customer</th>
+                <th class="pb-2">Vehicle</th>
+                <th class="pb-2">Pickup Branch</th>
+                <th class="pb-2">Return Branch</th>
+                <th class="pb-2">Pickup Date</th>
+                <th class="pb-2">Return Date</th>
+                <th class="pb-2">Status</th>
+                <th class="pb-2">Actual Cost</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for rental in rentals %}
+            <tr class="border-b cursor-pointer hover:bg-gray-50"
+                hx-get="/dashboard/rental-agreements/{{ rental.rental_agreement_id }}/detail/"
+                hx-target="#rental-detail-{{ rental.rental_agreement_id }}"
+                hx-swap="innerHTML"
+                hx-trigger="click"
+                onclick="toggleDetail('{{ rental.rental_agreement_id }}')">
+                <td class="py-2">{{ rental.customer.first_name }} {{ rental.customer.last_name }}</td>
+                <td class="py-2">{{ rental.vehicle.make }} {{ rental.vehicle.model }}</td>
+                <td class="py-2">{{ rental.pickup_branch.name }}</td>
+                <td class="py-2">{{ rental.return_branch.name }}</td>
+                <td class="py-2">{{ rental.scheduled_pickup_datetime|date:"M d, Y" }}</td>
+                <td class="py-2">{{ rental.scheduled_return_datetime|date:"M d, Y" }}</td>
+                <td class="py-2">
+                    <span class="px-2 py-1 rounded text-xs font-medium
+                        {% if rental.status == 'Active' %}bg-green-100 text-green-700
+                        {% elif rental.status == 'Booked' %}bg-blue-100 text-blue-700
+                        {% elif rental.status == 'Completed' %}bg-gray-100 text-gray-700
+                        {% elif rental.status == 'Cancelled' %}bg-red-100 text-red-700
+                        {% endif %}">
+                        {{ rental.status }}
+                    </span>
+                </td>
+                <td class="py-2">${{ rental.actual_cost }}</td>
+            </tr>
+            <tr id="rental-detail-row-{{ rental.rental_agreement_id }}" class="hidden">
+                <td colspan="8">
+                    <div id="rental-detail-{{ rental.rental_agreement_id }}" class="bg-gray-50 p-4"></div>
+                </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="8" class="py-2 text-gray-400">No rental agreements found.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<script>
+function toggleDetail(rentalId) {
+    const detailRow = document.getElementById('rental-detail-row-' + rentalId);
+    const isHidden = detailRow.classList.contains('hidden');
+
+    if (isHidden) {
+        detailRow.classList.remove('hidden');
+    } else {
+        detailRow.classList.add('hidden');
+        document.getElementById('rental-detail-' + rentalId).innerHTML = '';
+    }
+}
+</script>
+{% endblock %}
