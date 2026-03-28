@@ -28,6 +28,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = [config('DOMAIN')]
 
+CSRF_TRUSTED_ORIGINS = [config('CSRF_TRUSTED_ORIGINS')]
 
 # Application definition
 
